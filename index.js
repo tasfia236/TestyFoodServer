@@ -60,26 +60,3 @@ run().catch(console.dir);
 app.listen(port, (req, res) => {
     console.log('listening on port ' + port);
 })
-
-// app.post('/jwt', logger, async (req, res) => {
-//     const user = req.body;
-//     console.log(user);
-
-//     const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-//         expiresIn: '1h'
-//     });
-
-//     res
-//         .cookie('token', token, {
-//             httpOnly: true,
-//             secure: false
-//         })
-//         .send({ success: true })
-// })
-
-// // services related api
-// app.get('/services', logger, async (req, res) => {
-//     const cursor = serviceCollection.find();
-//     const result = await cursor.toArray();
-//     res.send(result);
-// })
