@@ -28,6 +28,8 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         client.connect()
 
+        const FoodCollection = client.db('foodCollection').collection('foods');
+
         //auth related
         app.post('/jwt', async (req, res) => {
             const user = req.body;
@@ -42,6 +44,14 @@ async function run() {
                     sameState: 'none'
                 })
                 .send({ success: true });
+        })
+
+
+        //features related
+        app.get('/foods', async (req, res) => {
+            const cursor = FoodCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
         })
 
         app.get('/', (req, res) => {
