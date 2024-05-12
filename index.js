@@ -3,12 +3,12 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 //const cookieParser = require('cookie-parser')
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 8000;
 
 app.use(cors({
-    origin: ['http://localhost:5176'],
+    origin: ['http://localhost:5173'],
     credentials: true
 }));
 app.use(express.json());
@@ -53,6 +53,36 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         })
+
+        app.get('/foods/:id', async (req, res) => {
+            const id = req.params.id;
+            const quary = { _id: new ObjectId(id) }
+            const result = await FoodCollection.findOne(quary);
+            res.send(result);
+        })
+
+        app.post('/foods', async (req, res) => {
+            const food = req.body;
+            console.log(food);
+            const result = await FoodCollection.insertOne(food);
+            res.send(result);
+        });
+
+        app.put('/foods/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true };
+            const updateNote = req.body
+            const notes = {
+                $set: {
+                    additional_notes: updateNote.additional_notes
+                }
+            }
+            const result = await FoodCollection.updateOne(filter, notes, options);
+            console.log(result);
+            res.send(result);
+        });
+
 
         app.get('/', (req, res) => {
             res.send('Welcome to Our testy Food Home!');
