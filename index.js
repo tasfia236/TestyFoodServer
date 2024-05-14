@@ -73,7 +73,7 @@ async function run() {
 
         //features related
         app.get('/foods', logger, async (req, res) => {
-            const cursor = FoodCollection.find();
+            const cursor = FoodCollection.find().sort({ "expired_datetime": -1});
             const result = await cursor.toArray();
             res.send(result);
         })
@@ -94,6 +94,7 @@ async function run() {
 
         // managefoods 
         app.get('/managefoods', logger, verifyToken, async (req, res) => {
+        //    console.log(req.user.email);
             console.log(req.query.email);
             // console.log('ttttt token', req.cookies.token)
             console.log('user in the valid token', req.user)
@@ -105,6 +106,7 @@ async function run() {
             if (req.query?.email) {
                 query = { email: req.query.email }
             }
+            console.log(query)
             const result = await FoodCollection.find(query).toArray();
             res.send(result);
         })
