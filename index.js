@@ -166,20 +166,6 @@ async function run() {
             res.send(result);
         })
 
-        // app.patch('/removestatusfoods/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const filter = { _id: new ObjectId(id) };
-        //     const updatedStatus = req.body;
-        //     console.log(updatedStatus);
-        //     const updateDoc = {
-        //         $set: {
-        //             intStatus: JSON.parse(updatedStatus.status),
-        //         },
-        //     };
-        //     const result = await FoodCollection.updateOne(filter, updateDoc);
-        //     res.send(result);
-        // })
-
         app.put('/updatefoods/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) }
@@ -199,7 +185,7 @@ async function run() {
                     intStatus: JSON.parse(updateFoods.status),
                 }
             }
-            const result = await FoodCollection.updateOne(filter, foods);
+            const result = await FoodCollection.updateOne(filter, foods, options);
             res.send(result);
         });
 
